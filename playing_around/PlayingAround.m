@@ -1,4 +1,3 @@
-rng(6);
 
 N = 100;
 a = 50*rand(N,1)+10;
@@ -15,3 +14,8 @@ b(:, 2) = 1;
 % sssum = size(simulation_results.DAN.Data);
 % ts = timeseries(Daddy, linspace(0,simulation_time,simulation_time/step_time+1)');
 dad = 100*rand(1);
+
+    
+    d_rand_var = 100*rand(4,1);
+    d_prob = 1;
+    d_table = [d_rand_var(1)<d_prob;d_rand_var(2)<d_prob;d_rand_var(3)<d_prob;d_rand_var(4)<d_prob];

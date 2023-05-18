@@ -20,7 +20,15 @@ j = 2*((simulation_time-f1.duration)-fault_start_time);
 k = 2*((simulation_time/fault_count-f1.duration)-fault_start_time);
 fx = linspace(1,30, 30);
 fmean = mean(f);
-plot(fx,f);
+% plot(fx,f);
     d_rand_var = 100*rand(4,1);
     d_prob = 1;
     d_table = [d_rand_var(1)<d_prob;d_rand_var(2)<d_prob;d_rand_var(3)<d_prob;d_rand_var(4)<d_prob];
+Ca0 = 0.2 mol/L;
+k_rate = 0.002923; 
+t_test = linspace(1, 10000, 10000);
+Ca = exp(ln(Ca0)-k_rate*t_test./(24*60*60));
+Cp = Cao - Ca;
+ext_eff = (-100.*Cp.*0.146)./(4.244)+1;
+strip_eff = (-100.*Cp.*0.088)./(1.752)+1;
+plot(t_test, ext_eff, 'Linecolo

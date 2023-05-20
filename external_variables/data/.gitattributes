@@ -1,1 +1,2 @@
 external_variables_testing.mat filter=lfs diff=lfs merge=lfs -text
+external_variables_training.mat filter=lfs diff=lfs merge=lfs -text

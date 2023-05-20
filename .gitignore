@@ -44,6 +44,7 @@ codegen/
 
 # Octave session info
 octave-workspace
+
 external_variables/output_50days/graphs/external_variables_training_smoothed.png
 external_variables/output_50days/graphs/external_variables_testing_smoothed.png
 external_variables/data_pieter/external_variables_training.mat
@@ -53,6 +54,4 @@ external_variables/output_50days/graphs/external_variables_testing.png
 external_variables/output_50days/graphs/external_variables_training.png
 external_variables/data/external_variables_testing.mat
 external_variables/data/external_variables_testing.mat
-external_variables/data/external_variables_testing.mat
-external_variables/data/external_variables_training.mat
-external_variables/data/external_variables_training.mat
+

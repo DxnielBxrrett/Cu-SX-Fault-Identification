@@ -8,8 +8,8 @@
 # ----------------
 
 # Ignore the simulation and data analysis outputs
-output
-
+output/
+output_test/
 # MATLAB:
 # -------
 

@@ -1,4 +1,4 @@
-
+rng(18);
 N = 100;
 a = 50*rand(N,1)+10;
 b = zeros(N,2);
@@ -18,9 +18,9 @@ dad = zeros(simulation_time/step_time+1,1);
 f = randn(30, 1)*(7);
 % j = 2*((simulation_time-f1.duration)-fault_start_time);
 % k = 2*((simulation_time/fault_count-f1.duration)-fault_start_time);
-fx = linspace(1,30, 30);
-fmean = mean(f);
-plot(fx,f);
+% fx = linspace(1,30, 30);
+% fmean = mean(f);
+% plot(fx,f);
 %     d_rand_var = 100*rand(4,1);
 %     d_prob = 1;
 %     d_table = [d_rand_var(1)<d_prob;d_rand_var(2)<d_prob;d_rand_var(3)<d_prob;d_rand_var(4)<d_prob];
@@ -37,3 +37,11 @@ plot(fx,f);
 % plot(t_test, ext_eff, '-c', t_test, strip_eff, 'ro');
 % subplot(2,1,2)
 % plot(t_test, Ca);
+sf = false;
+while sf == false
+    magnitude = randn(1)*20;
+    if abs(magnitude) > 10
+        sf = true;
+    end
+end
+    

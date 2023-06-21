@@ -48,7 +48,7 @@
 % tuning_data = table(simulation_results.tout, simulation_results.vLO_control.data, simulation_results.vLE_control.data, simulation_results.c_LO_measured.data, simulation_results.c_RE_measured.data);
 % tuning_data.Properties.VariableNames = ["Time (s)", "vLO control", "vLE control", "cLO (g/L)", "cRE (g/L)"];
 % writetable(tuning_data,"controller_tuning\data\feedback\vLO_step_feedback.csv");
-apple = [0:gamma_max/0.5];
-oranges = vLE_step.MSE_cLO;
-
+% apple = [0:gamma_max/0.5];
+% oranges = vLE_step.MSE_cLO;
+plot(vLE_step.timeH, vLE_step.cLO, '.', 'MarkerSize', 6, 'Color', maroon);
     

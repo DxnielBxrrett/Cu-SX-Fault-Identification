@@ -10,6 +10,7 @@
 # Ignore the simulation and data analysis outputs
 output/
 output_test/
+external_variables/data/
 # MATLAB:
 # -------
 

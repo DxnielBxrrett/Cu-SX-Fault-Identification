@@ -11,6 +11,7 @@
 output/
 output_test/
 external_variables/data/
+generated_data/
 # MATLAB:
 # -------
 

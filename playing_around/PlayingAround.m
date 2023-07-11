@@ -50,39 +50,45 @@
 % writetable(tuning_data,"controller_tuning\data\feedback\vLO_step_feedback.csv");
 % apple = [0:gamma_max/0.5];
 % oranges = vLE_step.MSE_cLO;
-rng(21);
-simulation_time = 60*60*24*7;
-step_time = 0.5;
-f1.duration = step_time*randi((max_fault_duration-min_fault_duration)/step_time)+min_fault_duration;
-        f1.start_time = step_time*randi(((simulation_time-f1.duration)-fault_start_time)/step_time)+fault_start_time;
-        while safeguard == false
-            f1.magnitude = randn(1)*(7);
-            if abs(f1.magnitude) > 3.5
-                safeguard = true;
-            end
+% rng(21);
+% simulation_time = 60*60*24*7;
+% step_time = 0.5;
+% f1.duration = step_time*randi((max_fault_duration-min_fault_duration)/step_time)+min_fault_duration;
+%         f1.start_time = step_time*randi(((simulation_time-f1.duration)-fault_start_time)/step_time)+fault_start_time;
+%         while safeguard == false
+%             f1.magnitude = randn(1)*(7);
+%             if abs(f1.magnitude) > 3.5
+%                 safeguard = true;
+%             end
+%         end
+%         f1.magnitude = randn(1)*(7);
+%         f1.input = zeros(simulation_time/step_time+1,1);
+%         for p = (f1.start_time/step_time+1):((f1.start_time+f1.duration)/step_time+1)
+%             f1.input(p) = f1.magnitude;
+%         end
+%         aMitch = 5;
+% f2.duration = step_time*randi((max_fault_duration-min_fault_duration)/step_time)+min_fault_duration;
+%         f2.start_time = step_time*randi(((simulation_time-f2.duration-settle_time)-fault_start_time)/step_time)+fault_start_time;
+%         safeguard = false;
+%         while safeguard == false
+%             f2.magnitude = randn(1)*(20);
+%             if abs(f2.magnitude) > 27.8
+%                 safeguard = true;
+%             end
+%         end
+%         
+%         f2.input = zeros(simulation_time/step_time+1,1);
+%         for z = (f2.start_time/step_time+1):((f2.start_time+f2.duration)/step_time+1)
+%             f2.input(z) = f2.magnitude;   
+%         end
+%         aDan = 6;
+%     amy = table();    
+%     amy.f1_magnitude = f1.input(1:(sampling_rate/step_time):end);
+%     amy.f2_magnitude = f2.input(1:(sampling_rate/step_time):end);
+%     writetable(amy, "process_model/output_test/measured_data.csv");
+apple = 2*randi([0 1]) - 1;
+f5.t = linspace(0, simulation_time, simulation_time/step_time+1);
+        f5.start_time = step_time*randi(((simulation_time-180-settle_time)/2-fault_start_time)/step_time)+fault_start_time;
+        for i = (f5.start_time/step_time+1):(length(f5.t))
+            f5.input(i) = (2*randi([0 1]) - 1)*0.25*4*((f5.t(i)-f5.start_time)./(60*60*24)).^(1/2);
         end
-        f1.magnitude = randn(1)*(7);
-        f1.input = zeros(simulation_time/step_time+1,1);
-        for p = (f1.start_time/step_time+1):((f1.start_time+f1.duration)/step_time+1)
-            f1.input(p) = f1.magnitude;
-        end
-        aMitch = 5;
-f2.duration = step_time*randi((max_fault_duration-min_fault_duration)/step_time)+min_fault_duration;
-        f2.start_time = step_time*randi(((simulation_time-f2.duration-settle_time)-fault_start_time)/step_time)+fault_start_time;
-        safeguard = false;
-        while safeguard == false
-            f2.magnitude = randn(1)*(20);
-            if abs(f2.magnitude) > 27.8
-                safeguard = true;
-            end
-        end
-        
-        f2.input = zeros(simulation_time/step_time+1,1);
-        for z = (f2.start_time/step_time+1):((f2.start_time+f2.duration)/step_time+1)
-            f2.input(z) = f2.magnitude;   
-        end
-        aDan = 6;
-    amy = table();    
-    amy.f1_magnitude = f1.input(1:(sampling_rate/step_time):end);
-    amy.f2_magnitude = f2.input(1:(sampling_rate/step_time):end);
-    writetable(amy, "process_model/output_test/measured_data.csv");

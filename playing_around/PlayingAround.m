@@ -71,6 +71,7 @@
 %         f2.start_time = step_time*randi(((simulation_time-f2.duration-settle_time)-fault_start_time)/step_time)+fault_start_time;
 %         safeguard = false;
 %         while safeguard == false
+a = (randn(1, 20)-1)*0.2;
 %             f2.magnitude = randn(1)*(20);
 %             if abs(f2.magnitude) > 27.8
 %                 safeguard = true;

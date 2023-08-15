@@ -71,7 +71,7 @@
 %         f2.start_time = step_time*randi(((simulation_time-f2.duration-settle_time)-fault_start_time)/step_time)+fault_start_time;
 %         safeguard = false;
 %         while safeguard == false
-a = (randn(1, 20)-1)*0.2;
+% a = (randn(1, 20)-1)*0.2;
 %             f2.magnitude = randn(1)*(20);
 %             if abs(f2.magnitude) > 27.8
 %                 safeguard = true;
@@ -87,9 +87,12 @@ a = (randn(1, 20)-1)*0.2;
 %     amy.f1_magnitude = f1.input(1:(sampling_rate/step_time):end);
 %     amy.f2_magnitude = f2.input(1:(sampling_rate/step_time):end);
 %     writetable(amy, "process_model/output_test/measured_data.csv");
-apple = 2*randi([0 1]) - 1;
-f5.t = linspace(0, simulation_time, simulation_time/step_time+1);
-        f5.start_time = step_time*randi(((simulation_time-180-settle_time)/2-fault_start_time)/step_time)+fault_start_time;
-        for i = (f5.start_time/step_time+1):(length(f5.t))
-            f5.input(i) = (2*randi([0 1]) - 1)*0.25*4*((f5.t(i)-f5.start_time)./(60*60*24)).^(1/2);
-        end
+% apple = randi(30);
+% f5.t = linspace(0, simulation_time, simulation_time/step_time+1);
+%         f5.start_time = step_time*randi(((simulation_time-180-settle_time)/2-fault_start_time)/step_time)+fault_start_time;
+%         for i = (f5.start_time/step_time+1):(length(f5.t))
+%             f5.input(i) = (2*randi([0 1]) - 1)*0.25*4*((f5.t(i)-f5.start_time)./(60*60*24)).^(1/2);
+%         end
+% f3.start_time = 3600*24; 
+% a = [ones(1,f3.start_time/step_time) linspace(0, simulation_time-f3.start_time, (simulation_time-f3.start_time)/step_time)];
+a = f3.ext_eff<0.99999;

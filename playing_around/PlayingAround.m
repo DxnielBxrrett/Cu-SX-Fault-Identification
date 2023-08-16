@@ -95,4 +95,4 @@
 %         end
 % f3.start_time = 3600*24; 
 % a = [ones(1,f3.start_time/step_time) linspace(0, simulation_time-f3.start_time, (simulation_time-f3.start_time)/step_time)];
-a = f3.ext_eff<0.99999;
+a = randn(1)*3+5;

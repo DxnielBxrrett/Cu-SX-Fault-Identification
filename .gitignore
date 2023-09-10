@@ -57,3 +57,4 @@ external_variables/output_50days/graphs/external_variables_training.png
 external_variables/data/external_variables_testing.mat
 external_variables/data/external_variables_testing.mat
 
+results/Data/training_measured_data_combined.csv

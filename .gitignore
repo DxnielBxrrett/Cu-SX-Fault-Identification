@@ -58,3 +58,6 @@ external_variables/data/external_variables_testing.mat
 external_variables/data/external_variables_testing.mat
 
 results/Data/training_measured_data_combined.csv
+results/Models/gaussian_SVM_model.mat
+results/Data/testing_measured_data_combined.csv
+results/Data/testing_separatate_measured_data_combined.csv

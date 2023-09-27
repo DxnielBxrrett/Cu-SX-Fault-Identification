@@ -62,3 +62,5 @@ results/Models/gaussian_SVM_model.mat
 results/Data/testing_measured_data_combined.csv
 results/Data/testing_separatate_measured_data_combined.csv
 results/Data/testing_separate_measured_data_combined.csv
+results/Predictions/LDA2.mat
+results/Predictions/LDA4.mat

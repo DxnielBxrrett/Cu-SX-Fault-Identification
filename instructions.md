@@ -71,50 +71,17 @@ Create the following folder structure to save the simulation results using the `
 
 ### 1.4. Process states
 
-The desired fault combinations can be set using the `PROCESS_STATE` setting. The following table shows which loaded organic valve faults [2] and which lean electrolyte valve faults occur for the selected process state.
+The desired fault combinations can be set using the `PROCESS_STATE` setting. The process states used are as follows:
+Process state 0: Normal operation
+Process state 3: Extractant degradation fault
+Process state 4: Stuck valve fault
+Process state 14: Sensor drift fault
+Process state 18: Precision degradation fault
+Process state 19: Combination of process state 3 and 14
+Process state 20: Combination of process state 3, 14 and 18
+Process state 21: Combination of process state 14 and 18
 
-#### Table 2: Process states
-| Process State | Loaded Organic Valve | Lean Electrolyte Valve |
-|:-------------:|:--------------------:|:----------------------:|
-|      `0`      |        normal        |         normal         |
-|      `1`      |         stuck        |         normal         |
-|      `2`      |       stiction       |         normal         |
-|      `3`      |        normal        |          stuck         |
-|      `4`      |        normal        |        stiction        |
-|      `5`      |         stuck        |          stuck         |
-|      `6`      |         stuck        |        stiction        |
-|      `7`      |       stiction       |          stuck         |
-|      `8`      |       stiction       |        stiction        |
-|      `9`      |        custom        |         custom         |
 
-State `9` allows for custom behaviour to be defined in each control valve's `custom` variant subsystem's Stateflow chart.
-
-The valve states are represented by the following values, and are selected using variant subsystems:
-
-#### Table 3: Valve states
-| Value | Valve State |
-|:-----:|:-----------:|
-|  `0`  |    normal   |
-|  `1`  |    stuck    |
-|  `2`  |   stiction  |
-
-The time that the selected process faults occur can be set using the following `start_time` parameters. Corresponding `stop_time` parameters are also provided to set the time at which the process faults stop occurring. If no stop time is desired, set the respective `stop_time` parameter equal to the simulation time plus one.
-
-#### Table 4: Process fault start and stop time settings
-| Parameter                   | Units | Description                                          |
-|-----------------------------|:-----:|------------------------------------------------------|
-| `valve_LO_fault_start_time` |   s   | Time for the loaded organic valve's fault to occur   |
-| `valve_LO_fault_stop_time`  |   s   | Time for the loaded organic valve's fault to stop    |
-| `valve_LE_fault_start_time` |   s   | Time for the lean electrolyte valve's fault to occur |
-| `valve_LE_fault_stop_time`  |   s   | Time for the lean electrolyte valve's fault to stop  |
-
-### 1.5 Lowpass filter tuning
-
-The loaded organic and lean electrolyte control valve stiction models use 1<sup>st</sup> order Butterworth lowpass filters [3] to account for the sensor noise's effect on the valve stem positions. The valves 'stick' when the filtered valve position reaches a turning point.
-
-The cutoff frequency of the lowpass filters can be tuned by seting the `LOWPASS_FILTER_TUNING` setting to `true`. The stiction models then still run, but the control valves will not 'stick'. The filtered signals can be viewed using the `Valve LO Lowpass Filter Scope` and `Valve LE Lowpass Filter Scope` scopes found in their respective stiction-valve-model subsytems. The process state has to be set to such a state in which the valve under consideration is experiencing stiction for the lowpass filters to be active.
-
-The cutoff frequency for the loaded organic control valve's lowpass filter can be set using `valve_LO_stiction_lowpass_filter_cutoff_frequency` (rad/s). The cutoff frequency for the lean electrolyte control valve's lowpass filter can be set using `valve_LE_stiction_lowpass_filter_cutoff_frequency` (rad/s). 
 
 ## 2. External variables
 

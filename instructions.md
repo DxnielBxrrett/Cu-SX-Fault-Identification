@@ -73,12 +73,19 @@ Create the following folder structure to save the simulation results using the `
 
 The desired fault combinations can be set using the `PROCESS_STATE` setting. The process states used are as follows:
 Process state 0: Normal operation
+
 Process state 3: Extractant degradation fault
+
 Process state 4: Stuck valve fault
+
 Process state 14: Sensor drift fault
+
 Process state 18: Precision degradation fault
+
 Process state 19: Combination of process state 3 and 14
+
 Process state 20: Combination of process state 3, 14 and 18
+
 Process state 21: Combination of process state 14 and 18
 
 

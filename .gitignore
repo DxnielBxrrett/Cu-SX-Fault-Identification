@@ -8,8 +8,10 @@
 # ----------------
 
 # Ignore the simulation and data analysis outputs
-output
-
+output/
+output_test/
+external_variables/data/
+generated_data/
 # MATLAB:
 # -------
 
@@ -44,3 +46,24 @@ codegen/
 
 # Octave session info
 octave-workspace
+
+external_variables/output_50days/graphs/external_variables_training_smoothed.png
+external_variables/output_50days/graphs/external_variables_testing_smoothed.png
+external_variables/data_pieter/external_variables_training.mat
+external_variables/output_50days/data/external_variables_testing.mat
+external_variables/output_50days/data/external_variables_training.mat
+external_variables/output_50days/graphs/external_variables_testing.png
+external_variables/output_50days/graphs/external_variables_training.png
+external_variables/data/external_variables_testing.mat
+external_variables/data/external_variables_testing.mat
+
+results/Data/training_measured_data_combined.csv
+results/Models/gaussian_SVM_model.mat
+results/Data/testing_measured_data_combined.csv
+results/Data/testing_separatate_measured_data_combined.csv
+results/Data/testing_separate_measured_data_combined.csv
+results/Predictions/LDA2.mat
+results/Predictions/LDA4.mat
+results/Data/testing_measured_data_drift.csv
+results/Data/testing_measured_data_p_drift.csv
+results/Performance/training/~$Combined_performance.xlsx

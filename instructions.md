@@ -71,50 +71,24 @@ Create the following folder structure to save the simulation results using the `
 
 ### 1.4. Process states
 
-The desired fault combinations can be set using the `PROCESS_STATE` setting. The following table shows which loaded organic valve faults [2] and which lean electrolyte valve faults occur for the selected process state.
+The desired fault combinations can be set using the `PROCESS_STATE` setting. The process states used are as follows:
+Process state 0: Normal operation
 
-#### Table 2: Process states
-| Process State | Loaded Organic Valve | Lean Electrolyte Valve |
-|:-------------:|:--------------------:|:----------------------:|
-|      `0`      |        normal        |         normal         |
-|      `1`      |         stuck        |         normal         |
-|      `2`      |       stiction       |         normal         |
-|      `3`      |        normal        |          stuck         |
-|      `4`      |        normal        |        stiction        |
-|      `5`      |         stuck        |          stuck         |
-|      `6`      |         stuck        |        stiction        |
-|      `7`      |       stiction       |          stuck         |
-|      `8`      |       stiction       |        stiction        |
-|      `9`      |        custom        |         custom         |
+Process state 3: Extractant degradation fault
 
-State `9` allows for custom behaviour to be defined in each control valve's `custom` variant subsystem's Stateflow chart.
+Process state 4: Stuck valve fault
 
-The valve states are represented by the following values, and are selected using variant subsystems:
+Process state 14: Sensor drift fault
 
-#### Table 3: Valve states
-| Value | Valve State |
-|:-----:|:-----------:|
-|  `0`  |    normal   |
-|  `1`  |    stuck    |
-|  `2`  |   stiction  |
+Process state 18: Precision degradation fault
 
-The time that the selected process faults occur can be set using the following `start_time` parameters. Corresponding `stop_time` parameters are also provided to set the time at which the process faults stop occurring. If no stop time is desired, set the respective `stop_time` parameter equal to the simulation time plus one.
+Process state 19: Combination of process state 3 and 14
 
-#### Table 4: Process fault start and stop time settings
-| Parameter                   | Units | Description                                          |
-|-----------------------------|:-----:|------------------------------------------------------|
-| `valve_LO_fault_start_time` |   s   | Time for the loaded organic valve's fault to occur   |
-| `valve_LO_fault_stop_time`  |   s   | Time for the loaded organic valve's fault to stop    |
-| `valve_LE_fault_start_time` |   s   | Time for the lean electrolyte valve's fault to occur |
-| `valve_LE_fault_stop_time`  |   s   | Time for the lean electrolyte valve's fault to stop  |
+Process state 20: Combination of process state 3, 14 and 18
 
-### 1.5 Lowpass filter tuning
+Process state 21: Combination of process state 14 and 18
 
-The loaded organic and lean electrolyte control valve stiction models use 1<sup>st</sup> order Butterworth lowpass filters [3] to account for the sensor noise's effect on the valve stem positions. The valves 'stick' when the filtered valve position reaches a turning point.
 
-The cutoff frequency of the lowpass filters can be tuned by seting the `LOWPASS_FILTER_TUNING` setting to `true`. The stiction models then still run, but the control valves will not 'stick'. The filtered signals can be viewed using the `Valve LO Lowpass Filter Scope` and `Valve LE Lowpass Filter Scope` scopes found in their respective stiction-valve-model subsytems. The process state has to be set to such a state in which the valve under consideration is experiencing stiction for the lowpass filters to be active.
-
-The cutoff frequency for the loaded organic control valve's lowpass filter can be set using `valve_LO_stiction_lowpass_filter_cutoff_frequency` (rad/s). The cutoff frequency for the lean electrolyte control valve's lowpass filter can be set using `valve_LE_stiction_lowpass_filter_cutoff_frequency` (rad/s). 
 
 ## 2. External variables
 
@@ -182,8 +156,8 @@ The first and last points of each signal were manually changed to start and stop
 ### 3.1. Running the model
 
 1. Run the Simulink model from either of the following two MATLAB Live Scripts:
-    1. `feedback_arx_models.mlx`
-    1. `feedforward_arx_models.mlx`
+    1. `FOPDT_feedback.mlx`
+    1. `FOPDT_feedforward.mlx`
 1. Run the above mentioned MATLAB Live Scripts from the main `Process-State-Identification` folder
 
 ### 3.2. Output folder structure
@@ -198,105 +172,14 @@ Create the following folder structure to save the ARX model [5] results:
         |__ feedforward
 ```
 
-## 4. Fault detection
-
-### 4.1. Running the fault detection
-
-1. Run the fault detection MATLAB Live Script from the main `Process-State-Identification` folder
-
-### 4.2. Fault detection settings
-
-#### Table 8: Fault detection settings
-| Setting                                 | Values                           | Description                                                                                                                                |
-|-----------------------------------------|----------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------|
-| `SAVE_IMAGES`                           | `true` <br> `false`              | Saves the generated images to the respective output folders if set to `true`.                                                              |
-| `SAVE_DATA`                             | `true` <br> `false`              | Saves the fault detection data to the respective output folder if set to `true`.                                                           |
-| `NUMBER_OF_PRINCIPLE_COMPONENTS_TO_USE` | `1` to `11`                      | Specify the number of principal components to use for the reduced principal component subspace.                                            |
-| `T2_ALPHA`                              | $T^{2}_{\alpha}\in\mathbb{R}>0\$ | Upper control limit (UCL) for the Hotelling's T<sup>2</sup> statistic control chart [6].                                                       |
-| `Q_ALPHA`                               | $Q_{\alpha}\in\mathbb{R}>0$      | UCL for the Q statistic control chart [6].                                                                                                     |
-| `NUMBER_CONSECUTIVE_ABOVE_UCL`          | $n\in{Z}\geq0$                   | Specify the number of consecutive measurements that must be above the UCL before a fault is detected.                                      |
-| `PROCESS_STATE_PLOTTING_REDUCED`        | `true` <br> `false`              | Only plots the single-fault process states (`0` to `4`) when set to `true`. Plots all the process states (`0` to `8`) when set to `false`. |
-| `ROC_CURVE_CONSTRUCTION_T2`             | `true` <br> `false`              | Appends the Hotelling's T<sup>2</sup> ROC curve results for the current $T^{2}_{\alpha}$ to the `ROC_CURVE_DATA_T2` table to use for constructing a Hotelling's T<sup>2</sup> ROC curve. |   
-| `ROC_CURVE_CONSTRUCTION_Q`              | `true` <br> `false`              | Appends the Q statistic ROC curve results for the current $Q_{\alpha}$ to the `ROC_CURVE_DATA_Q` table to use for constructing a Q statistic ROC curve.                                  | 
-| `STATE_1_START_TIME`                    | $n\in{Z}\geq0$                   | The time at which process state 1 starts in the fault detection dataset in units of seconds. Must be divisable by `SAMPLING_RATE`.         | 
-| `STATE_1_STOP_TIME`                     | $n\in{Z}\geq0$                   | The time at which process state 1 stops in the fault detection dataset in units of seconds. Must be divisable by `SAMPLING_RATE`.          | 
-| `STATE_2_START_TIME`                    | $n\in{Z}\geq0$                   | The time at which process state 2 starts in the fault detection dataset in units of seconds. Must be divisable by `SAMPLING_RATE`.         | 
-| `STATE_2_STOP_TIME`                     | $n\in{Z}\geq0$                   | The time at which process state 2 stops in the fault detection dataset in units of seconds. Must be divisable by `SAMPLING_RATE`.          | 
-| `STATE_3_START_TIME`                    | $n\in{Z}\geq0$                   | The time at which process state 3 starts in the fault detection dataset in units of seconds. Must be divisable by `SAMPLING_RATE`.         | 
-| `STATE_3_STOP_TIME`                     | $n\in{Z}\geq0$                   | The time at which process state 3 stops in the fault detection dataset in units of seconds. Must be divisable by `SAMPLING_RATE`.          | 
-| `STATE_4_START_TIME`                    | $n\in{Z}\geq0$                   | The time at which process state 4 starts in the fault detection dataset in units of seconds. Must be divisable by `SAMPLING_RATE`.         | 
-| `STATE_4_STOP_TIME`                     | $n\in{Z}\geq0$                   | The time at which process state 4 stops in the fault detection dataset in units of seconds. Must be divisable by `SAMPLING_RATE`.          | 
-| `SAMPLING_RATE`                         | $n\in{Z}\geq0$                   | The sensor sampling rate used for the data in units of seconds.                                                                            |
-| `DETECTION_DELAY_CONSTRUCTION_T2`       | `true` <br> `false`              | Appends the Hotelling's T<sup>2</sup> detection delay results for the current $T^{2}_{\alpha}$ to the `DETECTION_DELAY_DATA_T2` table to use for constructing a Hotelling's T<sup>2</sup> detection delay plot. |   
-| `DETECTION_DELAY_CONSTRUCTION_Q`        | `true` <br> `false`              | Appends the Q statistic detection delay results for the current $Q_{\alpha}$ to the `DETECTION_DELAY_DATA_Q` table to use for constructing a Q statistic detection delay plot.                                  | 
-
-### 4.3. Output folder structure
-
-Create the following folder structure to save to fault detection results using the `SAVE_IMAGES` and `SAVE_DATA` settings:
-
-```
-.
-|__ fault_detection
-    |__ output
-        |__ data
-        |__ fault_detection
-        |__ PCA
-        |__ training
-
-```
-
-## 5. ROC curves [7]
-
-### 5.1. Generating the ROC curves
-
-1. Run the ROC curves MATLAB Live Script from the main `Process-State-Identification` folder
-
-### 5.2. ROC curve settings
-
-#### Table 9: ROC curve settings
-| Setting                        | Values                                                 | Description                                                                                                                                 |
-|--------------------------------|--------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------|
-| `T2_TRAINING_INDEX`            | $n\in{Z}\in[1 \ , nr \ of \ T^{2} \ ROC \ datapoints]$ | The index of the Hotelling's T<sup>2</sup> training $T^{2}_{\alpha}$ point in the Hotelling's T<sup>2</sup> ROC curve data file.            |
-| `Q_TRAINING_INDEX`             | $n\in{Z}\in[1 \ , nr \ of \ Q \ ROC \ datapoints]$     | The index of the Q statistic training $Q_{\alpha}$ point in the Q statistic ROC curve data file.                                            |
-| `T2_RECOMMENDED_INDEX`         | $n\in{Z}\in[1 \ , nr \ of \ T^{2} \ ROC \ datapoints]$ | The index of the Hotelling's T<sup>2</sup> recommended $T^{2}_{\alpha}$ point in the Hotelling's T<sup>2</sup> ROC curve data file.         |
-| `Q_RECOMMENDED_INDEX`          | $n\in{Z}\in[1 \ , nr \ of \ Q \ ROC \ datapoints]$     | The index of the Q statistic recommended $Q_{\alpha}$ point in the Q statistic ROC curve data file.                                         |
-| `T2_OPTIMAL_SENSITIVITY_INDEX` | $n\in{Z}\in[1 \ , nr \ of \ T^{2} \ ROC \ datapoints]$ | The index of the Hotelling's T<sup>2</sup> optimal sensitivity $T^{2}_{\alpha}$ point in the Hotelling's T<sup>2</sup> ROC curve data file. |
-| `Q_OPTIMAL_SENSITIVITY_INDEX`  | $n\in{Z}\in[1 \ , nr \ of \ Q \ ROC \ datapoints]$     | The index of the Q statistic optimal sensitivity $Q_{\alpha}$ point in the Q statistic ROC curve data file.                                 |
-
-### 5.3. Constructing the ROC curves
-
-Save the `ROC_CURVE_DATA_T2` and `ROC_CURVE_DATA_Q` data tables from the fault detection as .mat files and copy them over to the following folder to use for constructing the ROC curves:
-
-```
-.
-|__ roc_curves
-    |__ data
-
-```
-
-### 5.4. Output folder structure
-
-Create the following folder structure to save to generated ROC curves:
-
-```
-.
-|__ roc_curves
-    |__ output
-
-```
-
 ## References
 
 [1]	T. Komulainen, P. Pekkala, A. Rantala, and S.-L. Jämsä-Jounela, “Dynamic modelling of an industrial copper solvent extraction process,” Hydrometallurgy, vol. 81, no. 1, pp. 52–61, Jan. 2006, doi: 10.1016/j.hydromet.2005.11.001.
 
-[2]	M. A. A. Shoukat Choudhury, N. F. Thornhill, and S. L. Shah, “Modelling Valve Stiction,” Control Eng Pract, vol. 13, no. 5, pp. 641–658, May 2005, doi: 10.1016/j.conengprac.2004.05.005.
-
-[3]	MathWorks, “Butterworth filter with varying coefficients - Simulink,” 2022. https://www.mathworks.com/help/control/ref/varyinglowpassfilter.html (accessed Oct. 25, 2022).
 
 [4]	T. Komulainen, F. J. Doyle, A. Rantala, and S. L. Jämsä-Jounela, “Control of an industrial copper solvent extraction process,” J Process Control, vol. 19, no. 1, pp. 2–15, Jan. 2009, doi: 10.1016/j.jprocont.2008.04.019.
 
 [5]	T. E. Marlin, Process Control: Designing Processes and Control Systems for Dynamic Performance, 2nd ed. 2015.
 
-[6]	A. Bakdi and A. Kouadri, “An improved plant-wide fault detection scheme based on PCA and adaptive threshold for reliable process monitoring: Application on the new revised model of Tennessee Eastman process,” J Chemom, vol. 32, no. 5, p. e2978, May 2018, doi: 10.1002/CEM.2978.
 
 [7]	G. James, D. Witten, T. Hastie, and R. Tibshirani, An Introduction to Statistical Learning. New York, NY: Springer US, 2021. doi: 10.1007/978-1-0716-1418-1.
